@@ -30,6 +30,12 @@ jobs:
       run: npm run build
       env:
         CI: false
+
+    - name: Upload build folder
+      uses: actions/upload-artifact@v3
+      with:
+        name: socmed-app-cra-build
+        path: build      
       
   deploy:
     name: deploy to server
@@ -37,8 +43,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+      - name: Get build artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: socmed-app-cra-build
       - name: install ssh keys
         # check this thread to understand why its needed:
         # https://stackoverflow.com/a/70447517
